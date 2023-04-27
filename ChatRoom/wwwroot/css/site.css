@@ -1,0 +1,92 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.vh-60 {
+    min-height: 70vh;
+    height: 70vh;
+    max-height: 70vh;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+body ::-webkit-scrollbar {
+    display: none;
+}
+
+#messageInput {
+    margin-right: 5px;
+}
+
+/*MENSAJE CSS*/
+#MessagesContainer, #LogsContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding-top: 15px;
+}
+
+.SmoothScroll {
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+}
+
+.message-container {
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    width: 90%;
+    max-width: 600px;
+    padding: 10px;
+}
+
+    .message-container .nombre-usuario {
+        font-weight: bold;
+    }
+
+.mensaje {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+    .mensaje .contenido-mensaje {
+        flex-grow: 1;
+        margin: 0 10px;
+        word-wrap: break-word;
+        word-break: break-word;
+    }
+
+    .mensaje .hora-mensaje {
+        font-size: 12px;
+        color: gray;
+    }
+
+.nombre-usuario-I {
+    color: blue;
+}
+
+.nombre-usuario-other {
+    color: black;
+}
+

@@ -1,0 +1,80 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container text-center">
+    
+    <!--HEADER CON NOMBRE DE USUARIO CONTAINER-->
+    <div class="row mb-5" id="BienvenidaUser">
+
+    </div>
+
+    <div class="row vh-60 d-none" id="ChatInfoContainers">
+        
+        <!--CHAT BOX CONTAINER-->
+        <div class="col-6 vh-60">
+            <div class="card h-100 @GetBorderStyle(5) mb-3 shadow rounded">
+                <div class="card-header @GetBorderStyle(5) sticky-top bg-white">
+                    <h5 class="mb-0">Chat Grupal</h5>
+                </div>
+                <div class="card-body p-0 text-start SmoothScroll">
+                    <div id="MessagesContainer">
+                    </div>
+                </div>
+                <div class="card-footer @GetBorderStyle(5) bg-white">
+                    <div class="input-group">
+                        <input type="text" class="form-control @GetBorderStyle(5)" placeholder="Escribe un mensaje" aria-label="Escribe un mensaje" aria-describedby="button-addon2" id="messageInput">
+                        <button class="btn btn-primary" type="button" id="sendButton">Enviar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--LOGS BOX CONTAINER-->
+        <div class="col-6 vh-60">
+            <div class="card h-100 @GetBorderStyle(1) mb-3 shadow rounded">
+                <div class="card-header @GetBorderStyle(1) sticky-top bg-white">
+                    <h5 class="mb-0">Log de Eventos</h5>
+                </div>
+                <div class="card-body p-0 text-start SmoothScroll">
+                    <div id="LogsContainer">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--MODAL PARA INGRESAR NOMBRE CONTAINER-->
+<div class="container">
+    @await Html.PartialAsync("NameUserModal")
+</div>
+
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+
+@functions {
+    string GetBorderStyle(int index)
+    {
+        switch (index % 8)
+        {
+            case 0:
+                return "border-primary";
+            case 1:
+                return "border-warning";
+            case 2:
+                return "border-success";
+            case 3:
+                return "border-danger";
+            case 4:
+                return "border-secondary";
+            case 5:
+                return "border-info";
+            case 6:
+                return "border-light";
+            case 7:
+                return "border-dark";
+            default:
+                return "";
+        }
+    }
+}
