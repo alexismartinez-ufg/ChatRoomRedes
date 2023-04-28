@@ -86,7 +86,6 @@ namespace ChatRoom
 
         public async Task SendMessageToClient(string Usuario, string mensaje)
         {
-            await SendLogToClient($"Enviando mensaje...");
 
             if (context.Usuario.Any(x => x.ConnectionId == Context.ConnectionId))
             {
@@ -105,8 +104,6 @@ namespace ChatRoom
                     await context.SaveChangesAsync();
 
                     await Clients.All.SendAsync("SendMessageToClients", await Decrypt(newMensaje.Contenido), newMensaje.FechaHora, newMensaje.NombreRemitente);
-
-                    await SendLogToClient($"Mensaje enviado por {Usuario}");
                 }
                 else
                 {
@@ -129,24 +126,20 @@ namespace ChatRoom
 
                 if (usuario != null)
                 {
-                    await SendLogToClient($"Editando usuario...");
 
                     usuario.Name = name;
                     await Clients.Client(Context.ConnectionId).SendAsync("IsConnected", true, name);
 
-                    await SendLogToClient($"Nombre asignado: {name}");
                 }
             }
             else
             {
-                await SendLogToClient($"Guardando usuario...");
 
                 usuario.ConnectionId = Context.ConnectionId; usuario.Name = name;
                 await context.Usuario.AddAsync(usuario);
                 await Clients.Client(Context.ConnectionId).SendAsync("IsConnected", true, name);
                 
                 
-                await SendLogToClient($"Nombre asignado: {name}");
             }
 
             await context.SaveChangesAsync();
@@ -164,16 +157,19 @@ namespace ChatRoom
 
         public async Task<string> Encrypt(string mensaje)
         {
-            await SendLogToClient($"Encriptando...");
 
-            string hash = "HashToEncryp";
+            string hash = "PruebaMD5";
             byte[] data = UTF8Encoding.UTF8.GetBytes(mensaje);
+
+            await SendLogToClient($"Encriptando key con MD5 {hash}");
 
             MD5 md5 = MD5.Create();
             TripleDES triples = TripleDES.Create();
 
             triples.Key = md5.ComputeHash(UTF8Encoding.UTF8.GetBytes(hash));
             triples.Mode = CipherMode.ECB;
+
+            await SendLogToClient($"Key encriptada con MD5 = {BitConverter.ToString(triples.Key).Replace("-", "").ToLower()}");
 
             ICryptoTransform transform = triples.CreateEncryptor();
             byte[] result = transform.TransformFinalBlock(data, 0, data.Length);
@@ -187,16 +183,19 @@ namespace ChatRoom
 
         public async Task<string> Decrypt(string mensajeEn)
         {
-            await SendLogToClient($"Desencriptando...");
 
-            string hash = "HashToEncryp";
+            string hash = "PruebaMD5";
             byte[] data = Convert.FromBase64String(mensajeEn);
+
+            await SendLogToClient($"Desencriptando con Key = {hash}");
 
             MD5 md5 = MD5.Create();
             TripleDES triples = TripleDES.Create();
 
             triples.Key = md5.ComputeHash(UTF8Encoding.UTF8.GetBytes(hash));
             triples.Mode = CipherMode.ECB;
+
+            await SendLogToClient($"Desencriptando con Key resultante en MD5 = {BitConverter.ToString(triples.Key).Replace("-", "").ToLower()}");
 
             ICryptoTransform transform = triples.CreateDecryptor();
             byte[] result = transform.TransformFinalBlock(data, 0, data.Length);
